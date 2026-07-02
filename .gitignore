@@ -1,0 +1,26 @@
+# Ignore Java Compiled binaries and packages
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignore local build directories
+bin/
+build/
+target/
+out/
+
+# Ignore Eclipse-specific project files
+.settings/
+.classpath
+.project
+.metadata/
+
+# Ignore IntelliJ-specific project files
+.idea/
+*.iml
+*.iws
+
+# Ignore OS-specific temporary files
+.DS_Store
+Thumbs.db
