@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computational Graph Visualizer</title>
+    <script type="text/javascript" src="js/vis-network.min.js"></script>
+    
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        #network-container {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+        }
+
+        .header-panel {
+            background-color: #0f172a;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .math-expression {
+            background-color: #1e293b;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #38bdf8;
+            font-weight: bold;
+            border: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-panel">
+        <h2 class="header-title">System Computation Topology</h2>
+        <div class="math-expression" id="expr-display">Formula: Loading...</div>
+    </div>
+
+    <div id="network-container"></div>
+
+    <script type="text/javascript">
+        // Expose data globally on the window object so the control panel can read active nodes
+        window.rawNodes = [{id:"TD", label:"D (N/A)", type:"topic"},{id:"TFinalResult", label:"FinalResult (N/A)", type:"topic"},{id:"AIncAgent_1404353107", label:"IncAgent", type:"agent"},{id:"TR1", label:"R1 (N/A)", type:"topic"},{id:"TR3", label:"R3 (N/A)", type:"topic"},{id:"TR2", label:"R2 (N/A)", type:"topic"},{id:"APlusAgent_381040353", label:"PlusAgent", type:"agent"},{id:"AMulAgent_474897809", label:"MulAgent", type:"agent"},{id:"APlusAgent_311013480", label:"PlusAgent", type:"agent"},{id:"TA", label:"A (N/A)", type:"topic"},{id:"TB", label:"B (N/A)", type:"topic"},{id:"TC", label:"C (N/A)", type:"topic"}];
+        window.rawEdges = [{from:"TD", to:"APlusAgent_311013480"},{from:"AIncAgent_1404353107", to:"TFinalResult"},{from:"TR1", to:"AMulAgent_474897809"},{from:"TR3", to:"AIncAgent_1404353107"},{from:"TR2", to:"AMulAgent_474897809"},{from:"APlusAgent_381040353", to:"TR1"},{from:"AMulAgent_474897809", to:"TR3"},{from:"APlusAgent_311013480", to:"TR2"},{from:"TA", to:"APlusAgent_381040353"},{from:"TB", to:"APlusAgent_381040353"},{from:"TC", to:"APlusAgent_311013480"}];
+
+        const formattedNodes = window.rawNodes.map(node => {
+            if (node.type === "topic") {
+                return {
+                    id: node.id,
+                    label: node.label,
+                    shape: "box",
+                    margin: 10,
+                    color: {
+                        background: "#3b82f6", 
+                        border: "#1d4ed8",
+                        hover: { background: "#60a5fa", border: "#1e40af" },
+                        highlight: { background: "#60a5fa", border: "#1e40af" }
+                    },
+                    font: { color: "#ffffff", size: 12, face: "Segoe UI", bold: true }
+                };
+            } else {
+                return {
+                    id: node.id,
+                    label: node.label,
+                    shape: "circle",
+                    margin: 12,
+                    color: {
+                        background: "#10b981",
+                        border: "#047857",
+                        hover: { background: "#34d399", border: "#065f46" },
+                        highlight: { background: "#34d399", border: "#065f46" }
+                    },
+                    font: { color: "#ffffff", size: 11, face: "Segoe UI", bold: true }
+                };
+            }
+        });
+
+        const nodes = new vis.DataSet(formattedNodes);
+        const edges = new vis.DataSet(window.rawEdges);
+        const container = document.getElementById("network-container");
+        const data = { nodes: nodes, edges: edges };
+        
+        const options = {
+            layout: {
+                randomSeed: 42 // Forces the physics engine to keep the node layout locked in place
+            },
+            nodes: {
+                borderWidth: 2,
+                shadow: { enabled: true, color: "rgba(0,0,0,0.1)", size: 4, x: 2, y: 2 }
+            },
+            edges: {
+                arrows: {
+                    to: {
+                        enabled: true,
+                        scaleFactor: 0.75,
+                        type: "arrow"
+                    }
+                },
+                color: {
+                    color: "#64748b",
+                    highlight: "#3b82f6",
+                    hover: "#3b82f6"
+                },
+                width: 2,
+                hoverWidth: 3,
+                smooth: {
+                    enabled: true,
+                    type: "cubicBezier",
+                    roundness: 0.4
+                }
+            },
+            interaction: {
+                dragNodes: true,
+                dragView: true,
+                zoomView: true,
+                hover: true
+            },
+            physics: {
+                enabled: true,
+                solver: "forceAtlas2Based",
+                forceAtlas2Based: {
+                    gravitationalConstant: -180, // Stronger repulsion to push nodes far apart (was -70)
+                    centralGravity: 0.01,       // Slightly lower gravity to let nodes spread wider (was 0.015)
+                    springLength: 180,           // Longer springs to increase spacing between nodes (was 130)
+                    springConstant: 0.05,        // Softer springs to let node repulsion take control (was 0.08)
+                    avoidOverlap: 1.0            // Strictly prevents nodes from rendering directly on top of each other
+                },
+                stabilization: {
+                    enabled: true,
+                    iterations: 300,             // More stabilization iterations to settle the larger spread nicely
+                    updateInterval: 25
+                }
+            }
+        };
+
+        const network = new vis.Network(container, data, options);
+
+        network.once("stabilizationIterationsDone", function () {
+            network.fit({
+                animation: {
+                    duration: 1200,
+                    easingFunction: "easeInOutQuad"
+                }
+            });
+        });
+
+        function inferExpression() {
+            const incoming = {};
+            const outgoing = {};
+            
+            window.rawNodes.forEach(n => {
+                incoming[n.id] = [];
+                outgoing[n.id] = [];
+            });
+            
+            window.rawEdges.forEach(e => {
+                if (outgoing[e.from]) outgoing[e.from].push(e.to);
+                if (incoming[e.to]) incoming[e.to].push(e.from);
+            });
+            
+            const leaves = window.rawNodes.filter(n => n.type === 'topic' && outgoing[n.id].length === 0);
+            
+            if (leaves.length === 0) return "N/A";
+            
+            function resolve(nodeId) {
+                const node = window.rawNodes.find(n => n.id === nodeId);
+                if (!node) return "";
+                
+                const type = node.type;
+                const cleanName = node.label.split(" ")[0];
+                
+                if (type === 'topic') {
+                    const sources = incoming[nodeId];
+                    if (sources.length === 0) {
+                        return cleanName;
+                    } else {
+                        return resolve(sources[0]);
+                    }
+                } else {
+                    const inputs = incoming[nodeId];
+                    if (inputs.length === 0) return cleanName;
+                    
+                    const agentType = cleanName.toLowerCase();
+                    if (agentType.includes("plus") || agentType.includes("binopagent")) {
+                        if (inputs.length >= 2) {
+                            return "(" + resolve(inputs[0]) + " + " + resolve(inputs[1]) + ")";
+                        }
+                    } else if (agentType.includes("minus")) {
+                        if (inputs.length >= 2) {
+                            return "(" + resolve(inputs[0]) + " - " + resolve(inputs[1]) + ")";
+                        }
+                    } else if (agentType.includes("mul")) {
+                        if (inputs.length >= 2) {
+                            return "(" + resolve(inputs[0]) + " * " + resolve(inputs[1]) + ")";
+                        }
+                    } else if (agentType.includes("inc")) {
+                        return "(" + resolve(inputs[0]) + " + 1)";
+                    }
+                    
+                    return cleanName + "(" + inputs.map(resolve).join(", ") + ")";
+                }
+            }
+            
+            const expressions = leaves.map(leaf => {
+                const cleanLeafName = leaf.label.split(" ")[0];
+                return cleanLeafName + " = " + resolve(leaf.id);
+            });
+            return expressions.join(" | ");
+        }
+
+        /**
+         * Asynchronously polls topic values over the network.
+         * Keeps the active dragged node visual format completely preserved.
+         */
+        function fetchLiveValues() {
+            fetch("/publish?action=values")
+                .then(response => response.json())
+                .then(values => {
+                    // Update existing nodes smoothly without resets
+                    window.rawNodes.forEach(node => {
+                        if (node.type === "topic") {
+                            const topicName = node.id.substring(1);
+                            const val = values[topicName] || "N/A";
+                            const newLabel = topicName + " (" + val + ")";
+                            
+                            const currentNode = nodes.get(node.id);
+                            if (currentNode && currentNode.label !== newLabel) {
+                                nodes.update({ id: node.id, label: newLabel });
+                            }
+                        }
+                    });
+                    
+                    document.getElementById("expr-display").innerText = "Formula: " + inferExpression();
+                })
+                .catch(err => console.warn("Live values tracking error: ", err));
+        }
+
+        // Initialize active polling interval
+        setInterval(fetchLiveValues, 500);
+        fetchLiveValues();
+
+        // Unlock the control panel input fields once the graph page loads successfully
+        if (parent && parent.leftFrame && parent.leftFrame.setPublishEnabled) {
+            parent.leftFrame.setPublishEnabled(true);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #64748b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            font-size: 14px;
+        }
+        .placeholder-box {
+            border: 2px dashed #cbd5e1;
+            padding: 30px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            max-width: 320px;
+        }
+        .title {
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="placeholder-box">
+        <div class="title">No Active Configuration</div>
+        Please deploy a layout file using the file uploader to begin.
+    </div>
+
+    <script>
+        // Lock the inputs on the left side panel when configuration is cleared
+        if (parent && parent.leftFrame && parent.leftFrame.setPublishEnabled) {
+            parent.leftFrame.setPublishEnabled(false);
+        }
+    </script>
+</body>
+</html>

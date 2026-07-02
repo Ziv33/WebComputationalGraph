@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computational Graph Dashboard</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            padding: 12px;
+            gap: 12px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .left-col {
+            flex: 0 0 280px;
+        }
+
+        .center-col {
+            flex: 1;
+        }
+
+        .right-col {
+            flex: 0 0 240px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Left Column: Control Panel -->
+        <div class="column left-col">
+            <iframe src="form.html" name="leftFrame" id="leftFrame"></iframe>
+        </div>
+
+        <!-- Center Column: Graph Visualizer Canvas -->
+        <div class="column center-col">
+            <iframe src="temp.html" name="centerFrame" id="centerFrame"></iframe>
+        </div>
+
+        <!-- Right Column: Values Table -->
+        <div class="column right-col">
+            <iframe src="temp.html" name="rightFrame" id="rightFrame"></iframe>
+        </div>
+    </div>
+
+</body>
+</html>

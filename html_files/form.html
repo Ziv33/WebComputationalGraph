@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control Panel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 10px;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .form-section {
+            margin-bottom: 20px;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e2e8f0;
+            transition: opacity 0.2s;
+        }
+        h3 {
+            margin-top: 0;
+            font-size: 14px;
+            color: #0f172a;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+        }
+        .form-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #475569;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+            font-size: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            transition: border-color 0.15s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background-color: #fff;
+        }
+        input:disabled {
+            background-color: #f1f5f9 !important;
+            cursor: not-allowed;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            border: none;
+            transition: all 0.15s;
+            box-sizing: border-box;
+        }
+        .btn:disabled {
+            background-color: #cbd5e1 !important;
+            color: #94a3b8 !important;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background-color: #1d4ed8;
+        }
+        .btn-orange {
+            background-color: #f97316;
+            color: white;
+            margin-top: 10px;
+        }
+        .btn-orange:hover:not(:disabled) {
+            background-color: #ea580c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-section">
+        <h3>Configuration Upload</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data" target="centerFrame" onsubmit="setTimeout(() => { parent.rightFrame.location.href = '/publish'; }, 200);">
+            <div class="form-group">
+                <label for="configFile">Choose File</label>
+                <input type="file" id="configFile" name="file" required>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Deploy">
+        </form>
+        
+        <form action="/upload?action=clear" method="POST" target="centerFrame" onsubmit="document.getElementById('configFile').value = ''; setPublishEnabled(false); setTimeout(() => { parent.rightFrame.location.href = 'temp.html'; }, 150);">
+            <input type="submit" class="btn btn-orange" value="Clear Configuration">
+        </form>
+    </div>
+
+    <div class="form-section" id="publishSection">
+        <h3>Publish Message</h3>
+        <form id="publishForm" action="/publish" method="GET" target="rightFrame" onsubmit="handleFormSubmit();">
+            <div class="form-group">
+                <label for="topicName">Topic name:</label>
+                <input type="text" id="topicName" name="topic" placeholder="e.g., A" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="messageVal">Message:</label>
+                <input type="text" id="messageVal" name="message" placeholder="e.g., 5.0" required disabled>
+            </div>
+            <input type="submit" id="sendBtn" class="btn btn-primary" value="Send" disabled>
+        </form>
+
+        <form id="resetForm" action="/publish" method="GET" target="rightFrame">
+            <input type="hidden" name="action" value="reset">
+            <input type="submit" id="resetBtn" class="btn btn-orange" value="Reset Topic Values" disabled>
+        </form>
+    </div>
+
+    <script>
+        function handleFormSubmit() {
+            const topicName = document.getElementById('topicName').value.trim();
+            
+            setTimeout(() => {
+                document.getElementById('messageVal').value = '';
+            }, 100);
+
+            const centerFrame = parent.centerFrame;
+            let isNewTopic = true;
+            if (centerFrame && centerFrame.rawNodes) {
+                isNewTopic = !centerFrame.rawNodes.some(node => node.id === "T" + topicName);
+            }
+            
+            if (isNewTopic) {
+                setTimeout(() => {
+                    centerFrame.location.replace("active_graph.html?t=" + new Date().getTime());
+                }, 200);
+            }
+        }
+
+        function setPublishEnabled(enabled) {
+            document.getElementById('topicName').disabled = !enabled;
+            document.getElementById('messageVal').disabled = !enabled;
+            document.getElementById('sendBtn').disabled = !enabled;
+            document.getElementById('resetBtn').disabled = !enabled;
+            
+            document.getElementById('publishSection').style.opacity = enabled ? "1.0" : "0.5";
+        }
+
+        window.onload = function() {
+            setPublishEnabled(false);
+        }
+    </script>
+</body>
+</html>
