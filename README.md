@@ -75,7 +75,7 @@ WebComputationalGraph/
 
 ## Installation
 
-**Requirements:** Java 8+ (JDK), no external dependencies or build tool required — the project is a plain Java source tree.
+**Requirements:** Java 8+ (JDK), no external dependencies or build tool required.
 
 1. Clone the repository:
    ```bash
@@ -104,12 +104,7 @@ This will:
    - `POST /upload` → `ConfLoader`
    - `GET /app/` → `HtmlLoader` (serving files from `html_files/`)
 3. Block on `System.in`, so the server keeps running until you press **Enter** in the terminal, at which point it shuts down cleanly (closes sockets and the thread pool).
-
-Once running, open a browser at:
-
-```
-http://localhost:8080/app/index.html
-```
+Once running, open a browser at: [http://localhost:8080/app/index.html](http://localhost:8080/app/index.html)
 
 ## Using the Dashboard
 
@@ -158,10 +153,10 @@ Agents are instantiated reflectively via `getConstructor(String[].class, String[
 
 ## Documentation (Javadoc)
 
-Full API documentation has been generated and is available at **[doc/index.html](doc/index.html)**. Click the link (or open the file directly in a browser) to browse the complete API reference, including usage examples for `HTTPServer`, `Servlet`, `Agent`, and `Graph`.
+Full API documentation has been generated and is available **[here](https://html-preview.github.io/?url=https://github.com/Ziv33/WebComputationalGraph/blob/main/doc/index.html)**. Click the link to browse the complete API reference, including usage examples for `HTTPServer`, `Servlet`, `Agent`, and `Graph`.
 
 ## Demo Video
 
-A walkthrough of the project — background, design, and a live demo of configuration upload, graph visualization, and message publishing — is available at: **[add link here]**
+A walkthrough of the project — background, design, and a live demo of configuration upload, graph visualization, and message publishing — is available **[here]**
 
 The slides used in the presentation can be found in: [WebComputationalGraphPresentation.pptx](WebComputationalGraphPresentation.pptx).
