@@ -163,7 +163,7 @@ Agents are instantiated reflectively via `getConstructor(String[].class, String[
 
 Full API documentation has been generated and is available **[here](https://html-preview.github.io/?url=https://github.com/Ziv33/WebComputationalGraph/blob/main/doc/index.html)**. Click the link to browse the complete API reference, including usage examples.
 
-## Demo Video
+## Demo Video and Presentation
 
 A walkthrough of the project — background, design, and a live demo of configuration upload, graph visualization, and message publishing — is available **[here]**
 
