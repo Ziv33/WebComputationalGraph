@@ -4,7 +4,7 @@
 
 > Built as part of the Advanced Programming course (BIU).
 
-**Author:** [Ziv](https://github.com/Ziv33)
+**Author:** [Ziv Chaba](https://github.com/Ziv33)
 
 ---
 
@@ -27,7 +27,7 @@
 - [Configuration File Format](#configuration-file-format)
 - [Design Patterns Used](#design-patterns-used)
 - [Documentation (Javadoc)](#documentation-javadoc)
-- [Demo Video](#demo-video)
+- [Demo Video and Presentation](#demo-video)
 
 ---
 
