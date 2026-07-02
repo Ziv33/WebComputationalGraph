@@ -27,7 +27,7 @@
 - [Configuration File Format](#configuration-file-format)
 - [Design Patterns Used](#design-patterns-used)
 - [Documentation (Javadoc)](#documentation-javadoc)
-- [Demo Video and Presentation](#demo-video)
+- [Demo Video and Presentation](#demo-video-and-presentation)
 
 ---
 
