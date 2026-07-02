@@ -8,6 +8,12 @@
 
 ---
 
+<p align="center">
+  <img width="1920" height="908" alt="image" src="https://github.com/user-attachments/assets/4db0d17d-6c26-4c91-958f-3633a6f408af" />
+  <br>
+  <em>System Computation Topology - incAddMulText.conf Example </em>
+</p>
+
 ## Table of Contents
 
 - [Background](#background)
