@@ -33,7 +33,7 @@
 
 ## Background
 
-This project delivers an end-to-end platform for defining, running, and monitoring computational graphs — all built from the ground up in Java, with no third-party frameworks.
+This project delivers an end-to-end platform for defining, running, and monitoring computational graphs.
 
 At its core is a publisher/subscriber engine: independent agents perform computations and communicate exclusively through named topics, allowing complex pipelines to be composed simply by wiring agents to shared channels. Every agent runs concurrently and safely, thanks to a thread-safe topic registry and an Active Object execution model that keeps slow computations from blocking the rest of the system.
 
@@ -121,7 +121,7 @@ The dashboard (`index.html`) is split into three panels:
 - **Left — Controls:**
   - *Load Configuration* — choose a `.conf` file and click **Deploy** to upload it via `POST /upload`. The server parses it, builds the agent graph, checks it for cycles, and returns a live graph visualization rendered in the center panel.
   - *Send Message* — pick a topic name and value and click **Send** to publish via `GET /publish`, updating the running graph.
-- **Center — Graph View:** an interactive visualization (via `vis-network`) of the computational graph — topics as rectangles, agents as circles, edges following the data flow direction.
+- **Center — Graph View:** an interactive visualization of the computational graph — topics as rectangles, agents as circles, edges following the data flow direction.
 - **Right — Values Table:** the current value held by every active topic, refreshed after each publish.
 
 ## Configuration File Format
