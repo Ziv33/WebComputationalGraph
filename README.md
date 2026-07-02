@@ -92,14 +92,14 @@ WebComputationalGraph/
    ```
 2. Compile the sources:
 
-**Windows (Command Prompt):**
+   **Windows (Command Prompt):**
    ```cmd
    mkdir bin
    dir /s /b src\*.java > sources.txt
    javac -d bin -cp src @sources.txt
    ```
  
-**macOS / Linux:**
+   **macOS / Linux:**
    ```bash
    mkdir -p bin
    find src -name "*.java" > sources.txt
