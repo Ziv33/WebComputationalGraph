@@ -176,6 +176,6 @@ Full API documentation has been generated and is available **[here](https://html
 
 ## Demo Video and Presentation
 
-A walkthrough of the project — background, design, and a live demo of configuration upload, graph visualization, and message publishing — is available **[here]**
+A walkthrough of the project — background, design, and a live demo of configuration upload, graph visualization, and message publishing — is available **[here](https://github.com/user-attachments/assets/5b8471b7-9e96-49eb-ab5a-0d9da0435b05)**.
 
 The slides used in the presentation can be found in: [WebComputationalGraphPresentation.pptx](WebComputationalGraphPresentation.pptx).
