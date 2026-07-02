@@ -92,19 +92,19 @@ WebComputationalGraph/
    ```
 2. Compile the sources:
 
-   **Windows (Command Prompt):**
-```cmd
+**Windows (Command Prompt):**
+   ```cmd
    mkdir bin
    dir /s /b src\*.java > sources.txt
    javac -d bin -cp src @sources.txt
-```
+   ```
  
-   **macOS / Linux:**
-```bash
+**macOS / Linux:**
+   ```bash
    mkdir -p bin
    find src -name "*.java" > sources.txt
    javac -d bin -cp src @sources.txt
-```
+   ```
 
    Alternatively, import the `src` folder into Eclipse (or any Java IDE) as a new Java project.
 
